@@ -28,7 +28,7 @@ interface Props {
 
 export const ClosestBranchProvider = ({ children }: Props) => {
   const [state, branches] = useLoading();
-  const [search, setSearch] = useState<SearchLocation>();
+  const [search, setSearch] = useState<undefined | SearchLocation>();
   const [closest, setClosest] = useState<undefined | Branch>();
   useEffect(() => {
     if (branches && typeof search === 'object') {
