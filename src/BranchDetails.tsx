@@ -1,5 +1,6 @@
 import { StyleSheet, View, Text } from 'react-native';
 import { Branch } from './Branch';
+import { joinStrArray } from './utils';
 
 export default function BranchDetails({ branch }: { branch: Branch }) {
   return (
@@ -12,14 +13,14 @@ export default function BranchDetails({ branch }: { branch: Branch }) {
         <View style={styles.row}>
           <Text style={styles.text}>Services:</Text>
           <Text style={styles.textBold}>
-            {branch.ServiceAndFacility.join(', ')}
+            {joinStrArray(branch.ServiceAndFacility)}
           </Text>
         </View>
       )}
       {branch.Accessibility && (
         <View style={styles.row}>
           <Text style={styles.text}>Accessibility:</Text>
-          <Text style={styles.textBold}>{branch.Accessibility.join(', ')}</Text>
+          <Text style={styles.textBold}>{joinStrArray(branch.Accessibility)}</Text>
         </View>
       )}
     </View>
