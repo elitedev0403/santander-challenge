@@ -1,17 +1,15 @@
-import { useState, useEffect } from 'react';
-import { View, TextInput, StyleSheet, Text } from 'react-native';
 import * as Location from 'expo-location';
-import { SearchLocation } from './SearchLocation';
+import { useEffect, useState } from 'react';
+import { StyleSheet, TextInput, View } from 'react-native';
+import { ClosestBranchContextParams } from './ClosestBranchProvider';
 import InputResults from './InputResults';
+import { useClosestBranch } from './useClosestBranch';
 
-export default function BranchesInput({
-  search,
-  setSearch,
-}: {
-  search: SearchLocation;
-  setSearch: React.Dispatch<React.SetStateAction<SearchLocation>>;
-}) {
+export default function BranchesInput() {
   const [input, setInput] = useState('');
+  const { search, setSearch } =
+    useClosestBranch() as ClosestBranchContextParams;
+
   useEffect(() => {
     if (input.trim().length > 2) {
       setSearch('fetching');

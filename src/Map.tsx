@@ -1,8 +1,11 @@
-import MapView, { Marker, Callout } from 'react-native-maps';
-import { StyleSheet, View, Text } from 'react-native';
-import { Branch, branchAddress } from './Branch';
+import { StyleSheet, Text, View } from 'react-native';
+import MapView, { Callout, Marker } from 'react-native-maps';
+import { branchAddress } from './Branch';
+import { ClosestBranchContextParams } from './ClosestBranchProvider';
+import { useClosestBranch } from './useClosestBranch';
 
-export default function Map({ closest }: { closest: Branch | undefined }) {
+export default function Map() {
+  const { closest } = useClosestBranch() as ClosestBranchContextParams;
   return (
     <View style={styles.container}>
       <MapView

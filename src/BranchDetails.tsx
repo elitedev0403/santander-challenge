@@ -1,25 +1,30 @@
 import { StyleSheet, View, Text } from 'react-native';
 import { Branch } from './Branch';
+import { ClosestBranchContextParams } from './ClosestBranchProvider';
+import { useClosestBranch } from './useClosestBranch';
 
-export default function BranchDetails({ branch }: { branch: Branch }) {
+export default function BranchDetails() {
+  const { closest: branch } = useClosestBranch() as ClosestBranchContextParams;
   return (
     <View style={styles.container}>
       <View style={styles.row}>
         <Text style={styles.text}>Branch name:</Text>
-        <Text style={styles.textBold}>{branch.Name}</Text>
+        <Text style={styles.textBold}>{branch?.Name}</Text>
       </View>
-      {branch.ServiceAndFacility && (
+      {branch?.ServiceAndFacility && (
         <View style={styles.row}>
           <Text style={styles.text}>Services:</Text>
           <Text style={styles.textBold}>
-            {branch.ServiceAndFacility.join(', ')}
+            {branch?.ServiceAndFacility.join(', ')}
           </Text>
         </View>
       )}
-      {branch.Accessibility && (
+      {branch?.Accessibility && (
         <View style={styles.row}>
           <Text style={styles.text}>Accessibility:</Text>
-          <Text style={styles.textBold}>{branch.Accessibility.join(', ')}</Text>
+          <Text style={styles.textBold}>
+            {branch?.Accessibility.join(', ')}
+          </Text>
         </View>
       )}
     </View>
