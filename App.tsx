@@ -7,28 +7,30 @@ import Map from './src/Map';
 import Spinner from './src/Spinner';
 import useLoading from './src/useLoading';
 import { Branch } from './src/Branch';
-import { closestBranchTo } from './src/distances';
+import { closestBranchesTo } from './src/distances';
 import BranchDetails from './src/BranchDetails';
+
+const LOCATOR_DISPLAY_COUNT = 5;
 
 export default function App() {
   const [state, branches] = useLoading();
   const [search, setSearch] = useState<SearchLocation>();
-  const [closest, setClosest] = useState<undefined | Branch>();
+  const [closestBranches, setClosestBranches] = useState<Branch[]>();
   useEffect(() => {
     if (branches && typeof search === 'object') {
-      setClosest(closestBranchTo(search, branches));
+      setClosestBranches(closestBranchesTo(search, branches, LOCATOR_DISPLAY_COUNT));
     } else {
-      setClosest(undefined);
+      setClosestBranches([]);
     }
   }, [search, branches]);
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <Map closest={closest} />
+      <Map branches={closestBranches} />
       {state === 'ready' ? (
         <>
           <BranchesInput search={search} setSearch={setSearch} />
-          {closest && <BranchDetails branch={closest} />}
+          {closestBranches?.[0] && <BranchDetails branch={closestBranches[0]} />}
         </>
       ) : state === 'error' ? (
         <View style={styles.centred}>

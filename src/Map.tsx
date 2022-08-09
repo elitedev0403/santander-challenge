@@ -2,7 +2,7 @@ import MapView, { Marker, Callout } from 'react-native-maps';
 import { StyleSheet, View, Text } from 'react-native';
 import { Branch, branchAddress } from './Branch';
 
-export default function Map({ closest }: { closest: Branch | undefined }) {
+export default function Map({ branches }: { branches: Branch[] | undefined }) {
   return (
     <View style={styles.container}>
       <MapView
@@ -13,31 +13,35 @@ export default function Map({ closest }: { closest: Branch | undefined }) {
           longitude: -2.82,
           longitudeDelta: 11.35,
         }}>
-        {closest && closest.PostalAddress.GeoLocation && (
-          <Marker
-            key={closest.Identification}
-            title={closest.Name}
-            description={branchAddress(closest)}
-            coordinate={{
-              latitude: parseFloat(
-                closest.PostalAddress.GeoLocation.GeographicCoordinates
-                  .Latitude,
-              ),
-              longitude: parseFloat(
-                closest.PostalAddress.GeoLocation.GeographicCoordinates
-                  .Longitude,
-              ),
-            }}>
-            <Callout tooltip>
-              <View style={styles.callout}>
-                <Text style={styles.calloutHeader}>
-                  {closest.Name || closest.Identification}
-                </Text>
-                <Text style={styles.calloutText}>{branchAddress(closest)}</Text>
-              </View>
-            </Callout>
-          </Marker>
-        )}
+          {
+            branches?.map((branch: Branch) => (
+              branch && branch.PostalAddress.GeoLocation && (
+                <Marker
+                  key={branch.Identification}
+                  title={branch.Name}
+                  description={branchAddress(branch)}
+                  coordinate={{
+                    latitude: parseFloat(
+                      branch.PostalAddress.GeoLocation.GeographicCoordinates
+                        .Latitude,
+                    ),
+                    longitude: parseFloat(
+                      branch.PostalAddress.GeoLocation.GeographicCoordinates
+                        .Longitude,
+                    ),
+                  }}>
+                  <Callout tooltip>
+                    <View style={styles.callout}>
+                      <Text style={styles.calloutHeader}>
+                        {branch.Name || branch.Identification}
+                      </Text>
+                      <Text style={styles.calloutText}>{branchAddress(branch)}</Text>
+                    </View>
+                  </Callout>
+                </Marker>
+              )
+            ))
+          }
       </MapView>
     </View>
   );

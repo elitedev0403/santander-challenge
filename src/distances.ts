@@ -36,6 +36,35 @@ function distanceBetween(coord1: Coordinate, coord2: Coordinate) {
   return dist;
 }
 
+export function closestBranchesTo(
+  location: Location.LocationGeocodedLocation,
+  branches: Branch[],
+  count: number
+): Branch[] {
+  branches.sort((a: Branch, b: Branch) => {
+    if (a.PostalAddress.GeoLocation && b.PostalAddress.GeoLocation) {
+      const distanceA = distanceBetween(location, {
+        latitude: parseFloat(
+          a.PostalAddress.GeoLocation.GeographicCoordinates.Latitude,
+        ),
+        longitude: parseFloat(
+          a.PostalAddress.GeoLocation.GeographicCoordinates.Longitude,
+        ),
+      });
+      const distanceB = distanceBetween(location, {
+        latitude: parseFloat(
+          b.PostalAddress.GeoLocation.GeographicCoordinates.Latitude,
+        ),
+        longitude: parseFloat(
+          b.PostalAddress.GeoLocation.GeographicCoordinates.Longitude,
+        ),
+      });
+      return distanceA > distanceB ? 1: -1;
+    }
+    return 0;
+  })
+  return branches.slice(0, count);
+}
 export function closestBranchTo(
   location: Location.LocationGeocodedLocation,
   branches: Branch[],
